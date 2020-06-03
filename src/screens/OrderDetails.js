@@ -13,22 +13,17 @@ import {
 
 const OrderDetails = (props) => {
   let history = useHistory();
-  let [type, setType] = useState(1);
-  let [time, setTime] = useState("0");
-  let [deliveryTime, setDeliveryTime] = useState("0");
-  const handleSubmit = () => {
-    alert("submit");
-  };
   const [times, setTimes] = useState([]);
 
   const pickTime = (e) => {
     var value = e.target.value;
     console.log(value);
-    setDeliveryTime(value);
+    props.setDeliveryTime(value);
   };
 
   const spawnHours = () => {
     var date = new Date();
+    date = new Date(date.getTime() + 30 * 60000);
     if (times.length == 0) {
       if (date.getMinutes() <= 30) {
         var diff = 30 - date.getMinutes();
@@ -40,7 +35,7 @@ const OrderDetails = (props) => {
         var date_element = {
           hour: date.getHours(),
           minutes: date.getMinutes(),
-          value: new Date(date.getTime() + 30 * 60000),
+          value: date,
         };
         date = new Date(date.getTime() + 30 * 60000);
         var new_times = [...times, date_element];
@@ -86,7 +81,7 @@ const OrderDetails = (props) => {
         var date_element = {
           hour: date.getHours(),
           minutes: date.getMinutes(),
-          value: new Date(date.getTime() + 30 * 60000),
+          value: date,
         };
         date = new Date(date.getTime() + 30 * 60000);
         var new_times = [...times, date_element];
@@ -124,6 +119,30 @@ const OrderDetails = (props) => {
         setTimes(new_times);
       }
     }
+  };
+
+  const updateLocalStorage = () => {
+    localStorage.setItem("type", props.type);
+    localStorage.setItem("time", props.time);
+    localStorage.setItem("deliveryTime", props.deliveryTime);
+
+    spawnHours();
+  };
+  // update localstorage
+  updateLocalStorage();
+  const handleSubmit = () => {
+    if (props.time == "0") {
+      //ok - asap case
+    } else {
+      if (props.deliveryTime == "0") {
+        alert("Please choose a time interval");
+        return;
+      }
+    }
+
+    updateLocalStorage();
+
+    window.location.replace("/home");
   };
 
   console.log(times);
@@ -191,7 +210,7 @@ const OrderDetails = (props) => {
                         className=" col-md-6 col-sm-6 col-xs-6"
                         style={{ padding: "0px", paddingRight: "5px" }}
                       >
-                        {type == 1 ? (
+                        {props.type == 1 ? (
                           <button
                             className="btn btn-warning btn-block"
                             style={{
@@ -199,7 +218,9 @@ const OrderDetails = (props) => {
                               color: "white",
                               backgroundColor: "#F2A83B",
                             }}
-                            onClick={() => setType(1)}
+                            onClick={() => {
+                              props.setType(1);
+                            }}
                           >
                             Afhaal
                           </button>
@@ -213,7 +234,9 @@ const OrderDetails = (props) => {
                               // borderColor: "#F2A83B",
                               border: "none",
                             }}
-                            onClick={() => setType(1)}
+                            onClick={() => {
+                              props.setType(1);
+                            }}
                           >
                             Afhaal
                           </button>
@@ -223,7 +246,7 @@ const OrderDetails = (props) => {
                         className=" col-md-6 col-sm-6 col-xs-6"
                         style={{ padding: "0px" }}
                       >
-                        {type == 2 ? (
+                        {props.type == 2 ? (
                           <button
                             className="btn btn-warning btn-block"
                             style={{
@@ -231,7 +254,9 @@ const OrderDetails = (props) => {
                               color: "white",
                               backgroundColor: "#F2A83B",
                             }}
-                            onClick={() => setType(2)}
+                            onClick={() => {
+                              props.setType(2);
+                            }}
                           >
                             Levering
                           </button>
@@ -245,7 +270,9 @@ const OrderDetails = (props) => {
                               // borderColor: "#F2A83B",
                               border: "none",
                             }}
-                            onClick={() => setType(2)}
+                            onClick={() => {
+                              props.setType(2);
+                            }}
                           >
                             Levering
                           </button>
@@ -263,7 +290,7 @@ const OrderDetails = (props) => {
                         className=" col-md-6 col-sm-6 col-xs-6"
                         style={{ padding: "0px", paddingRight: "5px" }}
                       >
-                        {time == "0" ? (
+                        {props.time == "0" ? (
                           <button
                             className="btn btn-warning btn-block"
                             style={{
@@ -271,7 +298,9 @@ const OrderDetails = (props) => {
                               color: "white",
                               backgroundColor: "#F2A83B",
                             }}
-                            onClick={() => setTime("0")}
+                            onClick={() => {
+                              props.setTime("0");
+                            }}
                           >
                             Zo snel mogelijk
                           </button>
@@ -285,9 +314,11 @@ const OrderDetails = (props) => {
                               // borderColor: "#F2A83B",
                               border: "none",
                             }}
-                            onClick={() => setTime("0")}
+                            onClick={() => {
+                              props.setTime("0");
+                            }}
                           >
-                            Later vandaag
+                            Zo snel mogelijk
                           </button>
                         )}
                       </div>
@@ -295,7 +326,7 @@ const OrderDetails = (props) => {
                         className=" col-md-6 col-sm-6 col-xs-6"
                         style={{ padding: "0px" }}
                       >
-                        {time == "1" ? (
+                        {props.time == "1" ? (
                           <div>
                             <button
                               className="btn btn-warning btn-block"
@@ -305,7 +336,7 @@ const OrderDetails = (props) => {
                                 backgroundColor: "#F2A83B",
                               }}
                               onClick={() => {
-                                setTime("1");
+                                props.setTime("1");
                                 spawnHours();
                               }}
                             >
@@ -323,7 +354,7 @@ const OrderDetails = (props) => {
                               border: "none",
                             }}
                             onClick={() => {
-                              setTime("1");
+                              props.setTime("1");
                               spawnHours();
                             }}
                           >
@@ -333,7 +364,7 @@ const OrderDetails = (props) => {
                       </div>
                     </div>
                     <br />
-                    {time == "1" ? (
+                    {props.time == "1" ? (
                       <div
                         className="row"
                         style={{
@@ -368,7 +399,17 @@ const OrderDetails = (props) => {
                             }}
                             onChange={pickTime}
                           >
-                            <option hidden>Choose</option>
+                            {props.deliveryTime ? (
+                              <option hidden>
+                                {new Date(props.deliveryTime).getHours()}:
+                                {new Date(props.deliveryTime).getMinutes() < 10
+                                  ? new Date(props.deliveryTime).getMinutes() +
+                                    "0"
+                                  : new Date(props.deliveryTime).getMinutes()}
+                              </option>
+                            ) : (
+                              <option hidden>Choose</option>
+                            )}
                             {times.map((date) => {
                               return (
                                 <option value={date.value}>

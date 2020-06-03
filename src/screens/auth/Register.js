@@ -110,7 +110,40 @@ const Register = (props) => {
       return;
     }
 
-    alert("Send post");
+    axios
+      .post(data.baseUrl + "/api/auth/register", {
+        name,
+        last_name: lastName,
+        phone,
+        email,
+        password,
+        street,
+        postcode,
+        place,
+      })
+      .then((res) => {
+        console.log(res.data.access_token);
+        props.setToken(res.data.access_token);
+        localStorage.setItem("token", res.data.access_token);
+        localStorage.setItem("auth", true);
+
+        axios
+          .post(data.baseUrl + "/api/auth/me", {
+            token: res.data.access_token,
+          })
+          .then((res) => {
+            console.log(res.data);
+            localStorage.setItem("user", JSON.stringify(res.data));
+            props.setUser(res.data);
+          })
+          .catch((err) => console.log(err));
+
+        props.setAuth(true);
+        history.replace("/postcode");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

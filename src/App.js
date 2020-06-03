@@ -38,12 +38,24 @@ function App() {
   const savedToken = localStorage.getItem("token");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const loggedUser = JSON.parse(localStorage.getItem("user"));
+  const savedType = localStorage.getItem("type");
+  const savedTime = localStorage.getItem("time");
+  const savedDeliveryTime = localStorage.getItem("deliveryTime");
 
   const [isAuth, setAuth] = useState(savedAuth ? savedAuth : false);
   const [token, setToken] = useState(savedToken ? savedToken : "");
   const [cart, setCart] = useState(savedCart ? savedCart : []);
   const [user, setUser] = useState(loggedUser ? loggedUser : {});
   const [show, setShow] = useState(false);
+  const [paymentType, setPaymentType] = useState("");
+  const [adress, setAdress] = useState("");
+
+  // Order details
+  const [type, setType] = useState(savedType ? savedType : 1); // order type (takeout / delivery)
+  const [time, setTime] = useState(savedTime ? savedTime : "0"); // delivery time type :)) // if 0 - asap / if 1 - pick time
+  const [deliveryTime, setDeliveryTime] = useState(
+    savedDeliveryTime ? savedDeliveryTime : "0"
+  ); // picked time if needed
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -64,6 +76,8 @@ function App() {
     localStorage.removeItem("user");
     // localStorage.setItem('token', '');
     // localStorage.setAuth(false);
+    window.location.reload(false);
+    localStorage.clear();
     window.location.reload(false);
   };
 
@@ -93,7 +107,12 @@ function App() {
           <Router>
             <Navbar variant="dark" style={{ backgroundColor: "#1C1C1C" }}>
               <Container>
-                <Navbar.Brand href="#home" onClick={() => resetStorage()}>
+                <Navbar.Brand
+                  onClick={() => {
+                    // resetStorage();
+                    window.location.replace("/login");
+                  }}
+                >
                   <img src="./logo.png" style={{ height: "60px" }} />
                 </Navbar.Brand>
                 <Nav className="ml-auto">
@@ -238,16 +257,36 @@ function App() {
                 <PostCode token={token} />
               </Route>
               <Route path="/order_details">
-                <OrderDetails token={token} />
+                <OrderDetails
+                  type={type}
+                  setType={setType}
+                  time={time}
+                  setTime={setTime}
+                  deliveryTime={deliveryTime}
+                  setDeliveryTime={setDeliveryTime}
+                  token={token}
+                />
               </Route>
               <Route path="/user_details">
-                <Info token={token} />
+                <Info token={token} setUser={setUser} user={user} />
               </Route>
               <Route path="/my_orders">
-                <Orders token={token} />
+                <Orders
+                  token={token}
+                  cart={cart}
+                  setCart={setCart}
+                  user={user}
+                />
               </Route>
               <Route path="/register">
-                <Register />
+                <Register
+                  token={token}
+                  setToken={setToken}
+                  isAuth={isAuth}
+                  setAuth={setAuth}
+                  user={user}
+                  setUser={setUser}
+                />
               </Route>
               <Route path="/home">
                 <Home cart={cart} setCart={setCart} />
@@ -259,7 +298,19 @@ function App() {
           </Router>
         </div>
 
-        <Cart cart={cart} setCart={setCart} token={token} />
+        <Cart
+          cart={cart}
+          setCart={setCart}
+          paymentType={paymentType}
+          setPaymentType={setPaymentType}
+          token={token}
+          type={type}
+          time={time}
+          deliveryTime={deliveryTime}
+          adress={adress}
+          setAdress={setAdress}
+          user={user}
+        />
       </div>
       <Button
         variant="primary"

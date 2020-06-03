@@ -5,74 +5,28 @@ import { Redirect, useHistory, Link } from "react-router-dom";
 import data from "../../constants";
 
 const Info = (props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [street, setStreet] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [place, setPlace] = useState("");
+  if (!props.user) {
+    window.location.replace("/");
+  }
+  const [verified, setVerified] = useState(false);
 
-  let history = useHistory();
-
-  if (props.isAuth && props.token) {
-    history.replace("/home");
+  // check auth user
+  if (!verified) {
+    axios
+      .post(data.baseUrl + "/api/auth/me", {
+        token: props.token,
+      })
+      .then((res) => {
+        setVerified(true);
+      })
+      .catch((err) => {
+        localStorage.clear();
+        window.location.replace("/login");
+      });
   }
 
-  const changeEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const changePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const changeRepeatPassword = (e) => {
-    setRepeatPassword(e.target.value);
-  };
-
-  const changeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const changeLastName = (e) => {
-    setLastName(e.target.value);
-  };
-
-  const changePhone = (e) => {
-    setPhone(e.target.value);
-  };
-
-  const changeStreet = (e) => {
-    setStreet(e.target.value);
-  };
-
-  const changePostcode = (e) => {
-    setPostcode(e.target.value);
-  };
-
-  const changePlace = (e) => {
-    setPlace(e.target.value);
-  };
-
-  const registerSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email) {
-      alert("Please enter your email");
-      return;
-    }
-
-    if (!password) {
-      alert("Please enter your password");
-      return;
-    }
-
-    if (!repeatPassword || password != repeatPassword) {
-      alert("Please repeat your password");
-      return;
-    }
 
     if (!name) {
       alert("Please enter your name");
@@ -80,7 +34,7 @@ const Info = (props) => {
     }
 
     if (!lastName) {
-      alert("Please enter your lastName");
+      alert("Please enter your last name");
       return;
     }
 
@@ -104,7 +58,63 @@ const Info = (props) => {
       return;
     }
 
-    alert("Send post");
+    axios
+      .post(data.baseUrl + "/api/auth/update_me", {
+        token: props.token,
+        name,
+        last_name: lastName,
+        phone,
+        street,
+        postcode,
+        place,
+      })
+      .then((res) => {
+        console.log(res);
+        props.setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        alert("Your informations have been updated");
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+        alert(err.response.data.message);
+      });
+  };
+
+  const [name, setName] = useState(props.user.name);
+  const [lastName, setLastName] = useState(props.user.last_name);
+  const [phone, setPhone] = useState(props.user.phone);
+  const [street, setStreet] = useState(props.user.street);
+  const [postcode, setPostcode] = useState(props.user.postcode);
+  const [place, setPlace] = useState(props.user.place);
+
+  let history = useHistory();
+
+  if (props.isAuth && props.token) {
+    history.replace("/home");
+  }
+
+  const changeName = (e) => {
+    setName(e.target.value);
+  };
+
+  const changeLastName = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const changePhone = (e) => {
+    setPhone(e.target.value);
+  };
+
+  const changeStreet = (e) => {
+    setStreet(e.target.value);
+  };
+
+  const changePostcode = (e) => {
+    setPostcode(e.target.value);
+  };
+
+  const changePlace = (e) => {
+    setPlace(e.target.value);
   };
 
   return (
@@ -156,34 +166,7 @@ const Info = (props) => {
                     ACCOUNT WIJZIGEN
                   </h1>
                   <br />
-                  <form onSubmit={registerSubmit}>
-                    <div className="form-group">
-                      <input
-                        className="form-control"
-                        type="email"
-                        placeholder="e-mail"
-                        onChange={changeEmail}
-                        style={styles.input}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        className="form-control"
-                        type="password"
-                        placeholder="wachtwoord"
-                        onChange={changePassword}
-                        style={styles.input}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        className="form-control"
-                        type="password"
-                        placeholder="Herhaal wachtwoord"
-                        onChange={changeRepeatPassword}
-                        style={styles.input}
-                      />
-                    </div>
+                  <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <input
                         className="form-control"
@@ -191,6 +174,7 @@ const Info = (props) => {
                         placeholder="Naam"
                         onChange={changeName}
                         style={styles.input}
+                        value={name}
                       />
                     </div>
                     <div className="form-group">
@@ -200,6 +184,7 @@ const Info = (props) => {
                         placeholder="Voornaam"
                         onChange={changeLastName}
                         style={styles.input}
+                        value={lastName}
                       />
                     </div>
                     <div className="form-group">
@@ -209,6 +194,7 @@ const Info = (props) => {
                         placeholder="GSM-nummer"
                         onChange={changePhone}
                         style={styles.input}
+                        value={phone}
                       />
                     </div>
                     <div className="form-group">
@@ -218,6 +204,7 @@ const Info = (props) => {
                         placeholder="Straat en huisnummer"
                         onChange={changeStreet}
                         style={styles.input}
+                        value={street}
                       />
                     </div>
                     <div className="form-group">
@@ -227,6 +214,7 @@ const Info = (props) => {
                         placeholder="Postcode"
                         onChange={changePostcode}
                         style={styles.input}
+                        value={postcode}
                       />
                     </div>
                     <div className="form-group">
@@ -236,6 +224,7 @@ const Info = (props) => {
                         placeholder="Plaats"
                         onChange={changePlace}
                         style={styles.input}
+                        value={place}
                       />
                     </div>
 
@@ -250,7 +239,7 @@ const Info = (props) => {
                         borderColor: "#F2A83B",
                       }}
                     >
-                      Inloggen
+                      Opslaan
                     </button>
                     <br />
                     <br />

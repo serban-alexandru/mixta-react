@@ -15,6 +15,40 @@ import {
 
 const Cart = (props) => {
   var [adresses, setAdresses] = useState([]);
+  const user = props.user;
+  const [name, setName] = useState(user ? user.name : "");
+  const [lastName, setLastName] = useState(user ? user.last_name : "");
+  const [phone, setPhone] = useState(user ? user.phone : "");
+  // const [street, setStreet] = useState(user ? user.street : "");
+  // const [postcode, setPostcode] = useState(user ? user.postcode : "");
+  // const [place, setPlace] = useState(user ? user.place : "");
+  const [street, setStreet] = useState("street");
+  const [postcode, setPostcode] = useState("postcode");
+  const [place, setPlace] = useState("place");
+
+  const changeName = (e) => {
+    setName(e.target.value);
+  };
+
+  const changeLastName = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const changePhone = (e) => {
+    setPhone(e.target.value);
+  };
+
+  const changeStreet = (e) => {
+    setStreet(e.target.value);
+  };
+
+  const changePostcode = (e) => {
+    setPostcode(e.target.value);
+  };
+
+  const changePlace = (e) => {
+    setPlace(e.target.value);
+  };
 
   if (props.cart.length == 0) {
     return <CartEmpty />;
@@ -27,12 +61,58 @@ const Cart = (props) => {
     // console.log(total);
   }
 
+  const checkData = () => {
+    if (name && lastName && phone && street && postcode && place) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   function sendOrder() {
+    if (!props.paymentType) {
+      alert("Please select a payment method");
+      return;
+    }
+
+    if (!checkData()) {
+      alert("Please complete your adress details");
+      return;
+    }
+
+    // adress took from logged in user !!! at least thats what I hope :)
+    console.log("#######SEND ORDER INFO############");
+
+    const paymentType = props.paymentType;
+    const deliveryType = props.type;
+    const time = props.time; // if 0 = asap / if 1 => pick time interval
+    const deliveryTime = props.deliveryTime;
+
+    console.log("name: " + name);
+    console.log("lastName: " + lastName);
+    console.log("phone: " + phone);
+    console.log("street: " + street);
+    console.log("postcode: " + postcode);
+    console.log("place: " + place);
+    console.log("paymentType: " + paymentType);
+    console.log("deliveryType: " + deliveryType);
+    console.log("time: " + time);
+    console.log("deliveryTime: " + deliveryTime);
+
+    // Sauces to be added!
+    const products = props.card;
     console.log(props.cart);
 
-    // axios.post(data.baseUrl + "/api/auth/my_adresses", {
+    console.log("##################################");
 
-    // });
+    axios
+      .post(data.baseUrl + "/api/create_order", {})
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   // Bestel nu toggle animation
@@ -193,7 +273,26 @@ const Cart = (props) => {
             </a>
           </div>
           <Accordion.Collapse eventKey="1">
-            <AdressesComponent sendOrder={sendOrder} adresses={adresses} />
+            <AdressesComponent
+              paymentType={props.paymentType}
+              setPaymentType={props.setPaymentType}
+              sendOrder={sendOrder}
+              adresses={adresses}
+              token={props.token}
+              user={props.user}
+              changeName={changeName}
+              changeLastName={changeLastName}
+              changePhone={changePhone}
+              changeStreet={changeStreet}
+              changePostcode={changePostcode}
+              changePlace={changePlace}
+              name={name}
+              lastName={lastName}
+              phone={phone}
+              street={street}
+              postcode={postcode}
+              place={place}
+            />
           </Accordion.Collapse>
         </div>
       </Accordion>
