@@ -19,6 +19,7 @@ const OrderDetails = (props) => {
     var value = e.target.value;
     console.log(value);
     props.setDeliveryTime(value);
+    localStorage.setItem("deliveryTime", value);
   };
 
   const spawnHours = () => {
@@ -399,7 +400,7 @@ const OrderDetails = (props) => {
                             }}
                             onChange={pickTime}
                           >
-                            {props.deliveryTime ? (
+                            {props.deliveryTime != "0" ? (
                               <option hidden>
                                 {new Date(props.deliveryTime).getHours()}:
                                 {new Date(props.deliveryTime).getMinutes() < 10

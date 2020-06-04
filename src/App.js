@@ -76,9 +76,8 @@ function App() {
     localStorage.removeItem("user");
     // localStorage.setItem('token', '');
     // localStorage.setAuth(false);
-    window.location.reload(false);
     localStorage.clear();
-    window.location.reload(false);
+    window.location.replace("/login");
   };
 
   const seeDisplay = () => {

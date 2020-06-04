@@ -10,7 +10,7 @@ const Login = (props) => {
   let history = useHistory();
 
   if (props.isAuth && props.token) {
-    history.replace("/home");
+    history.replace("/order_details");
   }
 
   const changeEmail = (e) => {

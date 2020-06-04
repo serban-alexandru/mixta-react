@@ -12,6 +12,10 @@ const Home = (props) => {
   const [products, setProducts] = useState([]);
   const [pickedCat, setPickedCat] = useState(0);
 
+  if (!localStorage.getItem("type")) {
+    window.location.replace("/order_details");
+  }
+
   if (categories.length == 0) {
     Axios.get(data.baseUrl + "/api/categories").then((res) => {
       setCategories(res.data.categories);

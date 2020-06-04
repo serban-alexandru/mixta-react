@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import data from "../constants";
 import AdressesComponent from "../components/AdressesComponent";
+import { Modal } from "react-bootstrap";
 
 import {
   faTrashAlt,
@@ -19,12 +20,38 @@ const Cart = (props) => {
   const [name, setName] = useState(user ? user.name : "");
   const [lastName, setLastName] = useState(user ? user.last_name : "");
   const [phone, setPhone] = useState(user ? user.phone : "");
-  // const [street, setStreet] = useState(user ? user.street : "");
-  // const [postcode, setPostcode] = useState(user ? user.postcode : "");
-  // const [place, setPlace] = useState(user ? user.place : "");
-  const [street, setStreet] = useState("street");
-  const [postcode, setPostcode] = useState("postcode");
-  const [place, setPlace] = useState("place");
+  const [street, setStreet] = useState(user ? user.street : "");
+  const [postcode, setPostcode] = useState(user ? user.postcode : "");
+  const [place, setPlace] = useState(user ? user.place : "");
+  const [payUrl, setPayUrl] = useState("");
+  // const [street, setStreet] = useState("street");
+  // const [postcode, setPostcode] = useState("postcode");
+  // const [place, setPlace] = useState("place");
+  const [show, setShow] = useState(false);
+  const [paying, setPaying] = useState(0);
+  const [payingId, setPayingId] = useState(0);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  if (payingId != 0 && paying == 1) {
+    const checkk = () => {
+      axios
+        .get(data.baseUrl + "/api/auth/order_status/" + payingId)
+        .then((res) => {
+          if (res.data.status == 1) {
+            setPaying(0);
+            setPayingId(0);
+            clearInterval(checkorder);
+            alert("Thank you for your order");
+          }
+        })
+        .catch((err) => {});
+    };
+
+    var checkorder = setInterval(function () {
+      checkk();
+    }, 7000);
+  }
 
   const changeName = (e) => {
     setName(e.target.value);
@@ -70,6 +97,9 @@ const Cart = (props) => {
   };
 
   function sendOrder() {
+    if (props.cart.length == 0) {
+      alert("Please add products in your cart!");
+    }
     if (!props.paymentType) {
       alert("Please select a payment method");
       return;
@@ -100,15 +130,43 @@ const Cart = (props) => {
     console.log("deliveryTime: " + deliveryTime);
 
     // Sauces to be added!
-    const products = props.card;
+    const products = props.cart;
     console.log(props.cart);
 
     console.log("##################################");
 
     axios
-      .post(data.baseUrl + "/api/create_order", {})
+      .post(data.baseUrl + "/api/create_order", {
+        // user token
+        token: props.token,
+        // order details
+        paymentType,
+        deliveryType,
+        time,
+        deliveryTime,
+        // user details
+        name,
+        lastName,
+        phone,
+        street,
+        postcode,
+        place,
+        products: props.cart,
+      })
       .then((res) => {
         console.log(res);
+        if (res.data.payment_type == "online") {
+          // open payment modal <3
+          // setPayUrl(res.data.payment_url);
+          setPaying(1);
+          // alert(res.data.order_id);
+          setPayingId(res.data.order_id);
+          window.open(res.data.payment_url, "_blank");
+          // handleShow();
+        } else {
+          // pay on delivery => redirect to thank you page / alert smth?
+          alert("Thank you for your order!");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -296,6 +354,12 @@ const Cart = (props) => {
           </Accordion.Collapse>
         </div>
       </Accordion>
+      {/* 
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>
+          <iframe src={payUrl} style={{ width: "100%", height: "400px" }} />
+        </Modal.Body>
+      </Modal> */}
     </div>
   );
 };
