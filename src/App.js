@@ -15,6 +15,7 @@ import PostCode from "./screens/auth/PostCode";
 import OrderDetails from "./screens/OrderDetails";
 import Orders from "./screens/user/Orders";
 import Info from "./screens/user/Info";
+import Settings from "./screens/auth/Settings";
 
 import "./App.css";
 
@@ -69,13 +70,6 @@ function App() {
   };
 
   const logout = () => {
-    setToken("");
-    setAuth(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("auth");
-    localStorage.removeItem("user");
-    // localStorage.setItem('token', '');
-    // localStorage.setAuth(false);
     localStorage.clear();
     window.location.replace("/login");
   };
@@ -93,148 +87,139 @@ function App() {
     <div>
       <div
         className="row"
-        style={{ maxWidth: "100vw", margin: "0px", overflowX: "hidden" }}
+        style={{ margin: "0px", overflowX: "hidden", overflowY: "hidden" }}
       >
-        <div
-          className="col-md-9"
-          style={{
-            padding: "0px",
-            backgroundColor: "#3E3E3E",
-            minHeight: "100vh",
-          }}
-        >
-          <Router>
-            <Navbar variant="dark" style={{ backgroundColor: "#1C1C1C" }}>
-              <Container>
-                <Navbar.Brand
-                  onClick={() => {
-                    // resetStorage();
-                    window.location.replace("/login");
-                  }}
-                >
-                  <img src="./logo.png" style={{ height: "60px" }} />
-                </Navbar.Brand>
-                <Nav className="ml-auto">
-                  <Nav.Link href="#">
-                    {/* <Link style={styles} to="/">
+        <Router>
+          <div
+            className="col-md-12"
+            style={{
+              padding: "0px",
+              backgroundColor: "#56AAA8",
+              // minHeight: "100vh",
+              height: "11vh",
+              maxHeight: "90px",
+            }}
+          >
+            <Navbar variant="dark" style={{ backgroundColor: "#56AAA8" }}>
+              <Navbar.Brand
+                onClick={() => {
+                  // resetStorage();
+                  window.location.replace("/login");
+                }}
+              >
+                <img src="./logo.png" style={{ height: "60px" }} />
+              </Navbar.Brand>
+              <Nav className="ml-auto">
+                <Nav.Link href="#">
+                  {/* <Link style={styles} to="/">
                     LandingPage
                   </Link> */}
-                  </Nav.Link>
-                  {!token ? (
-                    <tag className="row" style={{ marginRight: "20px" }}>
-                      <Nav.Link href="#">
-                        <Link
-                          to="/register"
-                          style={{
-                            fontWeight: "500",
-                            fontSize: "18px",
-                            lineHeight: "21px",
-                            color: "white",
-                            marginRight: "35px",
-                          }}
-                        >
-                          Registreren
-                        </Link>
-                      </Nav.Link>
-
-                      <Nav.Link href="#">
-                        <Link
-                          to="/login"
-                          style={{
-                            fontWeight: "500",
-                            fontSize: "18px",
-                            lineHeight: "21px",
-                            color: "white",
-                          }}
-                        >
-                          Inloggen
-                        </Link>
-                      </Nav.Link>
-                    </tag>
-                  ) : (
-                    <tag className="row" style={{ marginRight: "20px" }}>
-                      <Nav.Link href="#" style={{ paddingTop: "20px" }}>
-                        <Link
-                          style={{
-                            fontWeight: "500",
-                            fontSize: "18px",
-                            lineHeight: "21px",
-                            color: "white",
-                            marginRight: "55px",
-                            paddingRight: "20px",
-                          }}
-                        >
-                          <Dropdown>
-                            <Dropdown.Toggle
-                              style={{
-                                backgroundColor: "#1C1C1C",
-                                border: "none",
-                                padding: "0px",
-                              }}
-                            >
-                              {user.name}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu style={{ marginTop: "20px" }}>
-                              <Dropdown.Item
-                                style={{
-                                  padding: "0px",
-                                  textAlign: "center",
-                                  padding: "5px 30px",
-                                }}
-                                onClick={() => {
-                                  window.location.replace("/user_details");
-                                }}
-                              >
-                                Profiel wijzigen
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                                href="/my_orders"
-                                style={{
-                                  padding: "0px",
-                                  textAlign: "center",
-                                  padding: "5px 30px",
-                                }}
-                                onClick={() => {
-                                  window.location.replace("/my_orders");
-                                }}
-                              >
-                                Bestelgeschiedenis
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </Link>
-                      </Nav.Link>
-                      <Nav.Link
-                        onClick={() => logout()}
-                        style={{ paddingTop: "20px" }}
+                </Nav.Link>
+                <Nav.Link href="#">
+                  <Link
+                    to="#"
+                    style={{
+                      fontWeight: "500",
+                      fontSize: "18px",
+                      lineHeight: "21px",
+                      color: "#477A78",
+                      marginRight: "120px",
+                      backgroundColor: "white",
+                      width: "200px",
+                      bottom: "0px",
+                      marginTop: token ? "10px" : "0px",
+                    }}
+                    className="btn btn-white"
+                  >
+                    Reserveer
+                  </Link>
+                </Nav.Link>
+                {!token ? (
+                  <tag className="row" style={{ marginRight: "0px" }}>
+                    <Nav.Link href="#">
+                      <Link
+                        to="/register"
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "18px",
+                          lineHeight: "21px",
+                          color: "white",
+                          marginRight: "55px",
+                        }}
                       >
-                        <Link
-                          style={{
-                            fontWeight: "500",
-                            fontSize: "18px",
-                            lineHeight: "21px",
-                            color: "#F2A83B",
-                          }}
-                        >
-                          Uitloggen
-                        </Link>
-                      </Nav.Link>
-                    </tag>
-                  )}
-                  <Nav.Link href="#">
-                    {/* <Link style={styles} to="/home">
+                        Registreren
+                      </Link>
+                    </Nav.Link>
+
+                    <Nav.Link href="#">
+                      <Link
+                        to="/login"
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "18px",
+                          lineHeight: "21px",
+                          color: "white",
+                          marginRight: "30px",
+                        }}
+                      >
+                        Inloggen
+                      </Link>
+                    </Nav.Link>
+                  </tag>
+                ) : (
+                  <tag className="row" style={{ marginRight: "0px" }}>
+                    <Nav.Link style={{ paddingTop: "20px" }}>
+                      <Link
+                        to="/settings"
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "18px",
+                          lineHeight: "21px",
+                          marginRight: "30px",
+                          color: "white",
+                        }}
+                      >
+                        Hi, {user.name} >
+                      </Link>
+                    </Nav.Link>
+                    <Nav.Link
+                      onClick={() => logout()}
+                      style={{ paddingTop: "20px" }}
+                    >
+                      <Link
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "18px",
+                          lineHeight: "21px",
+                          marginRight: "30px",
+                          color: "white",
+                        }}
+                      >
+                        Uitloggen
+                      </Link>
+                    </Nav.Link>
+                  </tag>
+                )}
+                <Nav.Link href="#">
+                  {/* <Link style={styles} to="/home">
                     Home
                   </Link> */}
-                  </Nav.Link>
-                </Nav>
-              </Container>
+                </Nav.Link>
+              </Nav>
               {/* <Form inline>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <Button variant="outline-info">Search</Button>
         </Form> */}
             </Navbar>
-
+          </div>
+          <div
+            className="col-md-9"
+            style={{
+              padding: "0px",
+              backgroundColor: "#FAFBFC",
+              minHeight: "89vh",
+            }}
+          >
             <Switch>
               <Route path="/login">
                 <Login
@@ -252,10 +237,13 @@ function App() {
               <Route path="/check_email">
                 <CheckEmail />
               </Route>
-              <Route path="/postcode">
+              {/* <Route path="/postcode">
                 <PostCode token={token} />
+              </Route> */}
+              <Route path="/settings">
+                <Settings token={token} />
               </Route>
-              <Route path="/order_details">
+              {/* <Route path="/order_details">
                 <OrderDetails
                   type={type}
                   setType={setType}
@@ -265,7 +253,7 @@ function App() {
                   setDeliveryTime={setDeliveryTime}
                   token={token}
                 />
-              </Route>
+              </Route> */}
               <Route path="/user_details">
                 <Info token={token} setUser={setUser} user={user} />
               </Route>
@@ -294,8 +282,8 @@ function App() {
                 <LandingPage />
               </Route>
             </Switch>
-          </Router>
-        </div>
+          </div>
+        </Router>
 
         <Cart
           cart={cart}

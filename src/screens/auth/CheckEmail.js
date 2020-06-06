@@ -25,7 +25,7 @@ const CheckEmail = (props) => {
               <div
                 className="card"
                 style={{
-                  backgroundColor: "#131313",
+                  backgroundColor: "white",
                 }}
               >
                 <div
@@ -37,24 +37,29 @@ const CheckEmail = (props) => {
                     width: "100%",
                   }}
                 >
+                  <br />
                   <h1
                     className="text-center"
                     style={{
                       color: "#F2A83B",
                       fontWeight: "bold",
-                      fontSize: "36px",
+                      fontSize: "24px",
+                      color: "#404B69",
                     }}
                   >
-                    GESLAAGD!
+                    Geslaagd 🎉
                   </h1>
+                  <br />
+
                   <h4
                     style={{
-                      fontSize: "24px",
+                      fontSize: "14px",
                       textAlign: "center",
-                      color: "white",
+                      color: "#4A4A4A",
                     }}
                   >
-                    Check je inbox
+                    We hebben je aanvraag goed ontvangen! Kijk je mailbox na
+                    voor verdere instructies.
                   </h4>
                   <br />
                   <Link to="/login">
@@ -64,14 +69,14 @@ const CheckEmail = (props) => {
                       style={{
                         width: "100%",
                         maxWidth: "200px",
-                        marginTop: "0",
-                        marginBottom: "15px",
-                        backgroundColor: "#F2A83B",
-                        borderColor: "#F2A83B",
+                        marginTop: "15px",
+                        backgroundColor: "#477A78",
+                        border: "none",
                       }}
                     >
                       Aanmelden
                     </button>
+                    <br />
                   </Link>
                   <br />
                 </div>

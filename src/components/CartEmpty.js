@@ -5,9 +5,11 @@ const CartEmpty = (props) => {
     <div
       className="col-md-3 col-sm-0 col-xs-0  d-none d-sm-none  d-md-block"
       style={{
+        Height: "40vh",
         minHeight: "40vh",
-        backgroundColor: "#1C1C1C",
+        backgroundColor: "#346C6B",
         textAlign: "center",
+        overflowY: "display",
       }}
     >
       <h1
@@ -31,7 +33,7 @@ const CartEmpty = (props) => {
       <h2
         style={{
           fontSize: "24px",
-          color: "#F2A83B",
+          color: "white",
           textAlign: "center",
           fontWeight: "bold",
         }}
@@ -39,15 +41,20 @@ const CartEmpty = (props) => {
         NOG NIKS IN JE <br /> WINKELMANDJE
       </h2>
       <br />
-      <br />
       <img src="./empty-burger.png" />
       <br />
       <br />
-      <br />
-      <br />
-      <h2 style={{ fontSize: "18px", color: "white", textAlign: "center" }}>
-        Log je hier links in of ga door als gast om <br /> te starten met
-        bestellen
+
+      <h2
+        style={{
+          fontSize: "18px",
+          color: "white",
+          textAlign: "center",
+          width: "260px",
+          margin: "auto",
+        }}
+      >
+        Log je hier links in of ga door als gast om te starten met bestellen
       </h2>
     </div>
   );

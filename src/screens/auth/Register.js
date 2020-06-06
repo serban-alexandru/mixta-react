@@ -163,18 +163,9 @@ const Register = (props) => {
               <div
                 className="card"
                 style={{
-                  backgroundColor: "#131313",
+                  backgroundColor: "white",
                 }}
               >
-                <ProgressBar
-                  now={33}
-                  style={{
-                    borderBottomRightRadius: "0",
-                    borderBottomLeftRadius: "0",
-                    height: "5px",
-                  }}
-                  variant="warning"
-                />
                 <div
                   className="card-body"
                   style={{
@@ -184,95 +175,118 @@ const Register = (props) => {
                     width: "100%",
                   }}
                 >
+                  <br />
                   <h1
                     className="text-center"
                     style={{
-                      color: "#F2A83B",
+                      color: "#404B69",
                       fontWeight: "bold",
-                      fontSize: "36px",
+                      fontSize: "24px",
                     }}
                   >
-                    REGISTREREN
+                    Maak je account aan
                   </h1>
+                  <br />
+
                   <br />
                   <form onSubmit={registerSubmit}>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        E-mail adres
+                      </h6>
                       <input
                         className="form-control"
                         type="email"
-                        placeholder="e-mail"
+                        placeholder=""
                         onChange={changeEmail}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        wachtwoord
+                      </h6>
                       <input
                         className="form-control"
                         type="password"
-                        placeholder="wachtwoord"
+                        placeholder=""
                         onChange={changePassword}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Herhaal wachtwoord
+                      </h6>
                       <input
                         className="form-control"
                         type="password"
-                        placeholder="Herhaal wachtwoord"
                         onChange={changeRepeatPassword}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Naam
+                      </h6>
                       <input
                         className="form-control"
                         type="text"
-                        placeholder="Naam"
                         onChange={changeName}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Voornaam
+                      </h6>
                       <input
                         className="form-control"
                         type="text"
-                        placeholder="Voornaam"
                         onChange={changeLastName}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        GSM-nummer
+                      </h6>
                       <input
                         className="form-control"
                         type="text"
-                        placeholder="GSM-nummer"
                         onChange={changePhone}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Straat en huisnummer
+                      </h6>
                       <input
                         className="form-control"
                         type="text"
-                        placeholder="Straat en huisnummer"
                         onChange={changeStreet}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Postcode
+                      </h6>
                       <input
                         className="form-control"
                         type="text"
-                        placeholder="Postcode"
                         onChange={changePostcode}
                         style={styles.input}
                       />
                     </div>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Plaats
+                      </h6>
                       <input
                         className="form-control"
                         type="text"
-                        placeholder="Plaats"
                         onChange={changePlace}
                         style={styles.input}
                       />
@@ -281,7 +295,7 @@ const Register = (props) => {
                       <tag
                         style={{
                           fontSize: "14px",
-                          color: "white",
+                          color: "#767676",
                           textAlign: "left",
                           maxWidth: "87%",
                           float: "right",
@@ -315,11 +329,11 @@ const Register = (props) => {
                         width: "100%",
                         maxWidth: "200px",
                         marginTop: "15px",
-                        backgroundColor: "#F2A83B",
-                        borderColor: "#F2A83B",
+                        backgroundColor: "#477A78",
+                        borderColor: "#477A78",
                       }}
                     >
-                      Inloggen
+                      Registeer
                     </button>
                     <br />
                     <br />
@@ -338,7 +352,10 @@ const Register = (props) => {
 const styles = {
   input: {
     width: "100%",
-    backgroundColor: "#C4C4C4",
+    backgroundColor: "#FAFAFA",
+    border: "none",
+    borderRadius: "5px",
+    height: "45px",
   },
 };
 

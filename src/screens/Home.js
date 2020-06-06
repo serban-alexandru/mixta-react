@@ -12,10 +12,6 @@ const Home = (props) => {
   const [products, setProducts] = useState([]);
   const [pickedCat, setPickedCat] = useState(0);
 
-  if (!localStorage.getItem("type")) {
-    window.location.replace("/order_details");
-  }
-
   if (categories.length == 0) {
     Axios.get(data.baseUrl + "/api/categories").then((res) => {
       setCategories(res.data.categories);
@@ -38,8 +34,24 @@ const Home = (props) => {
 
   const addToCart = (product) => {
     // console.log(product);
-    props.setCart([...props.cart, product]);
-    localStorage.setItem("cart", JSON.stringify([...props.cart, product]));
+    let products = props.cart;
+
+    let ok = 0;
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].id == product.id) {
+        products[i].quantity++;
+        ok = 1;
+        break;
+      }
+    }
+
+    props.setCart([...products]);
+
+    localStorage.setItem("cart", JSON.stringify(products));
+    if (ok == 0) {
+      props.setCart([...props.cart, product]);
+      localStorage.setItem("cart", JSON.stringify([...props.cart, product]));
+    }
     console.log(props.cart);
   };
 
@@ -51,63 +63,100 @@ const Home = (props) => {
       />
       <div className="container">
         <div className="">
-          <div className="row" style={{ paddingTop: "140px" }}>
-            <div className="col-md-12">
-              {categories.map((category) => {
-                if (category.id == pickedCat) {
+          <div className="row" style={{ paddingTop: "260px" }}>
+            <div
+              className="col-md-11"
+              style={{
+                margin: "auto",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "white",
+                  padding: "20px",
+                  borderRadius: "5px",
+                }}
+              >
+                {categories.map((category) => {
+                  if (category.id == pickedCat) {
+                    return (
+                      <button
+                        className="btn"
+                        onClick={() => pickCategory(category.id)}
+                        style={styles.categoryPicked}
+                      >
+                        {category.name}
+                      </button>
+                    );
+                  }
                   return (
                     <button
                       className="btn"
                       onClick={() => pickCategory(category.id)}
-                      style={styles.categoryPicked}
+                      style={styles.category}
                     >
                       {category.name}
                     </button>
                   );
-                }
-                return (
-                  <button
-                    className="btn"
-                    onClick={() => pickCategory(category.id)}
-                    style={styles.category}
-                  >
-                    {category.name}
-                  </button>
-                );
-              })}
-              {products.map((product) => {
-                return (
-                  <div className="card" style={styles.prductCard}>
-                    <img
-                      src="./burger.png"
-                      style={{
-                        height: "120px",
-                        width: "120px",
-                        margin: "-15px",
-                      }}
-                    />
-                    <tag style={styles.prodData}>
-                      {product.name}
-                      <tag
-                        className="float-right text-center"
-                        style={{ color: "#F2A83B", fontWeight: "bold" }}
-                      >
-                        €{product.price}
-                        <br />
-                        <button
-                          className="btn"
-                          style={styles.btnAdd}
-                          onClick={() => addToCart(product)}
+                })}
+              </div>
+              <h1 style={{ fontSize: "36px", padding: "20px 40px" }}>
+                Voorgerechten
+              </h1>
+              <div
+              // style={{
+              //   height: "300px",
+              //   overflowY: "scroll",
+              //   overflowX: "hidden",
+              // }}
+              >
+                {products.map((product) => {
+                  return (
+                    <div className="card" style={styles.prductCard}>
+                      <img
+                        src="./burger.png"
+                        style={{
+                          height: "115px",
+                          width: "115px",
+                          margin: "-5px",
+                        }}
+                      />
+                      <tag style={styles.prodData}>
+                        {product.name}
+                        <tag
+                          className="float-right text-center"
+                          style={{ color: "#4A4A4A", fontWeight: "bold" }}
                         >
-                          + voeg toe
-                        </button>
+                          <span
+                            className="btn"
+                            style={{
+                              marginRight: "45px",
+                              backgroundColor: "#477A78",
+                              color: "white",
+                              fontSize: "25px",
+                              padding: "0px",
+                              height: "40px",
+                              paddingRight: "20px",
+                              paddingLeft: "20px",
+                              marginTop: "20px",
+                            }}
+                            onClick={() => {
+                              addToCart(product);
+                            }}
+                          >
+                            +
+                          </span>
+                        </tag>
+                        <br />
+                        <tag style={styles.prodDesc}>
+                          {product.description}
+                          <br />€{product.price}
+                        </tag>
                       </tag>
-                      <br />
-                      <tag style={styles.prodDesc}>{product.description}</tag>
-                    </tag>
-                  </div>
-                );
-              })}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -122,20 +171,24 @@ let prductCard = {
   backgroundColor: "#696969",
   display: "inline-block",
   width: "100%",
-  height: "87px",
+  height: "97px",
+  background: "#FFFFFF",
+  boxShadow: "0px 8px 18px rgba(0, 0, 0, 0.05)",
+  borderRadius: "8px",
+  border: "none",
 };
 
 let prodDesc = {
-  fontSize: "16px",
+  fontSize: "14px",
 };
 
 let prodData = {
   position: "absolute",
   marginTop: "10px",
   marginLeft: "10px",
-  fontSize: "24px",
+  fontSize: "18px",
   fontWeight: "500",
-  color: "white",
+  color: "#4A4A4A",
   width: "100%",
   paddingRight: "100px",
 };
@@ -162,20 +215,21 @@ const styles = {
     width: width < 900 ? "105px" : "205px",
     backgroundColor: "blue",
     padding: "3px 20px",
-    borderRadius: "3px",
-    backgroundColor: "black",
-    color: "white",
+    borderRadius: "8px",
+    backgroundColor: "white",
+    color: "black",
     textDecoration: "none",
     marginRight: "10px",
     marginBottom: "10px",
     textAlign: "center",
+    border: "1px solid black",
   },
   categoryPicked: {
     width: width < 900 ? "105px" : "205px",
     backgroundColor: "blue",
     padding: "3px 20px",
     borderRadius: "3px",
-    backgroundColor: "#F2A83B",
+    backgroundColor: "#477A78",
     color: "white",
     textDecoration: "none",
     marginRight: "10px",

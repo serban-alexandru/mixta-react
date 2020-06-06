@@ -10,7 +10,7 @@ const Login = (props) => {
   let history = useHistory();
 
   if (props.isAuth && props.token) {
-    history.replace("/order_details");
+    history.replace("/home");
   }
 
   const changeEmail = (e) => {
@@ -48,7 +48,7 @@ const Login = (props) => {
             .catch((err) => console.log(err));
 
           props.setAuth(true);
-          history.replace("/postcode");
+          history.replace("/home");
         })
         .catch((res) => {
           alert("Bad credentials");
@@ -77,18 +77,9 @@ const Login = (props) => {
               <div
                 className="card"
                 style={{
-                  backgroundColor: "#131313",
+                  backgroundColor: "white",
                 }}
               >
-                <ProgressBar
-                  now={33}
-                  style={{
-                    borderBottomRightRadius: "0",
-                    borderBottomLeftRadius: "0",
-                    height: "5px",
-                  }}
-                  variant="warning"
-                />
                 <div
                   className="card-body"
                   style={{
@@ -101,45 +92,53 @@ const Login = (props) => {
                   <h1
                     className="text-center"
                     style={{
-                      color: "#F2A83B",
+                      color: "#404B69",
                       fontWeight: "bold",
-                      fontSize: "36px",
+                      fontSize: "24px",
                     }}
                   >
                     INLOGGEN
                   </h1>
                   <h4
                     style={{
-                      fontSize: "24px",
+                      fontSize: "18px",
                       textAlign: "center",
-                      color: "white",
+                      color: "#4A4A4A",
                     }}
                   >
-                    Welkom bij The Burgery
+                    Nog geen account?{" "}
+                    <a href="/register" style={{ color: "#56AAA8" }}>
+                      Registeer je
+                    </a>
                   </h4>
                   <br />
                   <form onSubmit={loginSubmit}>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        E-mail adres
+                      </h6>
                       <input
                         className="form-control"
                         type="email"
-                        placeholder="e-mail"
                         onChange={changeEmail}
                         style={styles.input}
                       />
                     </div>
+                    <br />
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        Wachtwoord
+                      </h6>
                       <input
                         className="form-control"
                         type="password"
-                        placeholder="wachtwoord"
                         onChange={changePassword}
                         style={styles.input}
                       />
                     </div>
                     <Link
                       to="/forgot_password"
-                      style={{ paddingTop: "-65px", color: "white" }}
+                      style={{ paddingTop: "-65px", color: "#477A78" }}
                     >
                       Wachtwoord vergeten?
                     </Link>
@@ -151,8 +150,8 @@ const Login = (props) => {
                         width: "100%",
                         maxWidth: "200px",
                         marginTop: "15px",
-                        backgroundColor: "#F2A83B",
-                        borderColor: "#F2A83B",
+                        backgroundColor: "#477A78",
+                        border: "none",
                       }}
                     >
                       Inloggen
@@ -166,8 +165,8 @@ const Login = (props) => {
                           width: "100%",
                           maxWidth: "200px",
                           marginTop: "15px",
-                          backgroundColor: "#4C4C4C",
-                          borderColor: "#4C4C4C",
+                          backgroundColor: "#56AAA7",
+                          borderColor: "#56AAA7",
                           marginBottom: "20px",
                         }}
                       >
@@ -189,7 +188,10 @@ const Login = (props) => {
 const styles = {
   input: {
     width: "100%",
-    backgroundColor: "#C4C4C4",
+    backgroundColor: "#FAFAFA",
+    border: "none",
+    borderRadius: "5px",
+    height: "45px",
   },
 };
 

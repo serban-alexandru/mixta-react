@@ -80,10 +80,43 @@ const Cart = (props) => {
   if (props.cart.length == 0) {
     return <CartEmpty />;
   }
+  console.log(props.cart);
+
+  const addQuantity = (id) => {
+    let products = props.cart;
+
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].id == id) {
+        localStorage.setItem("cart", JSON.stringify(products));
+
+        props.setCart([...products]);
+        products[i].quantity++;
+        break;
+      }
+    }
+
+    // props.setCart(products);
+  };
+
+  const decreaseQuantity = (id) => {
+    let products = props.cart;
+
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].id == id) {
+        products[i].quantity--;
+        break;
+      }
+    }
+
+    props.setCart([...products]);
+
+    localStorage.setItem("cart", JSON.stringify(products));
+    // props.setCart(products);
+  };
 
   var total = 0;
   for (let i = 0; i <= props.cart.length - 1; i++) {
-    total += props.cart[i].price;
+    total += props.cart[i].price * props.cart[i].quantity;
     // console.log(props.cart[i]);
     // console.log(total);
   }
@@ -173,30 +206,6 @@ const Cart = (props) => {
       });
   }
 
-  // Bestel nu toggle animation
-  function CustomToggle({ children, eventKey }) {
-    const decoratedOnClick = useAccordionToggle(eventKey, () =>
-      console.log("totally custom!")
-    );
-
-    return (
-      <button
-        className="btn"
-        style={{
-          marginTop: "30px",
-          width: "100%",
-          padding: "20px 0px",
-          backgroundColor: "#F2A83B",
-          color: "white",
-          fontWeight: "bold",
-        }}
-        onClick={decoratedOnClick}
-      >
-        {children}
-      </button>
-    );
-  }
-
   const getAdresses = () => {
     if (adresses.length == 0) {
       axios
@@ -234,10 +243,10 @@ const Cart = (props) => {
     <div
       className="col-md-3 col-sm-0 col-xs-0  d-none d-sm-none  d-md-block"
       style={{
-        minHeight: "100vh",
-        backgroundColor: "#1C1C1C",
+        // Height: "80vh",
+        minHeight: "100%",
+        backgroundColor: "#457877",
         textAlign: "center",
-        overflowY: "scroll",
       }}
     >
       <h1
@@ -257,109 +266,179 @@ const Cart = (props) => {
       </h1>
       <br />
       <br />
-      <br />
       {props.cart.map((product, index) => {
-        return (
-          <div>
-            <hr
-              style={{
-                display: "block",
-                height: "1px",
-                border: "0",
-                borderTop: "1px solid #ccc",
-                margin: "0",
-                marginTop: "-2px",
-                padding: "0",
-              }}
-            />
-            <h2
-              className="text-left"
-              style={{
-                fontSize: "18px",
-                color: "white",
-                padding: "20px 20px 10px 20px",
-              }}
-            >
-              <FontAwesomeIcon
+        if (product.quantity > 0) {
+          return (
+            <div>
+              <div className="card" style={{ padding: "0px" }}>
+                <div style={{ width: "100%" }}>
+                  <span
+                    style={{
+                      display: "inline-block",
+
+                      float: "left",
+                      marginTop: "15px",
+                      marginLeft: "-15px",
+                      width: "30%",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "inline-block",
+                        border: "1px solid black",
+                        padding: "6px 10px",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <span>
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            addQuantity(product.id);
+                          }}
+                        >
+                          +
+                        </span>
+                        <br />
+                        {product.quantity} <br />
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            decreaseQuantity(product.id);
+                          }}
+                        >
+                          -
+                        </span>{" "}
+                      </span>
+                    </span>
+                  </span>
+                  <span style={{ display: "inline-block" }}>
+                    <img
+                      src="./burger.png"
+                      style={{
+                        height: "115px",
+                        width: "115px",
+                        marginTop: "-50px",
+                        marginLeft: "-130px",
+                      }}
+                    />
+                    <br />
+                  </span>
+                  <span style={{ display: "inline-block" }}>
+                    <tag style={{ marginTop: "20px", marginLeft: "-220px" }}>
+                      <br />
+                      {product.name}
+                      {product.id}
+                      <br />
+                      <span style={{ color: "#477A78", textAlign: "left" }}>
+                        €{product.price}
+                      </span>
+                      <br />
+                      <br />
+                    </tag>
+                  </span>
+                </div>
+
+                {/* <FontAwesomeIcon
                 icon={faTrashAlt}
                 style={{ marginRight: "20px", cursor: "pointer" }}
                 onClick={() => removeItem(index)}
               />
-              {product.name}
-              <b className="float-right">€{product.price}</b>
-            </h2>
-            <hr
+              <h2
+                className="text-left"
+                style={{
+                  fontSize: "14px",
+                  color: "white",
+                  padding: "2px 20px 2px 20px",
+                }}
+              >
+                {product.name} x {product.quantity}
+                <b className="float-right">€{product.price}</b>
+              </h2> */}
+              </div>
+              <br />
+            </div>
+          );
+        }
+        return "";
+      })}
+      <br />
+      {props.cart.map((product, index) => {
+        return (
+          <div>
+            <h2
+              className="text-left"
               style={{
-                display: "block",
-                height: "1px",
-                border: "0",
-                borderTop: "1px solid #ccc",
-                margin: "0",
-                padding: "0",
+                fontSize: "14px",
+                color: "white",
+                padding: "2px 20px 2px 20px",
               }}
-            />
+            >
+              {product.name} x {product.quantity}
+              <b className="float-right">
+                €{Math.round(product.price * product.quantity * 100) / 100}
+              </b>
+            </h2>
           </div>
         );
       })}
-      <div
-        className="float-right text-white"
+      <br />
+      <hr
         style={{
-          display: "inline-block",
+          display: "block",
+          height: "1px",
+          border: "0",
+          borderTop: "1px solid #ccc",
+          margin: "0",
+          marginTop: "5px",
+          width: "90%",
+          margin: "auto",
+          // padding: "20px",
+        }}
+      />
+      <div
+        className="text-white"
+        style={{
+          // display: "inline-block",
           marginTop: "20px",
-          paddingRight: "10px",
+          paddingRight: "20px",
+          paddingLeft: "20px",
         }}
       >
-        <tag style={{ fontSize: "24px" }}>Totaal:</tag>
-        <tag
-          style={{
-            fontSize: "20px",
-            padding: "5px 10px",
-            border: "1px solid white",
-            borderRadius: "5px",
-            marginLeft: "20px",
-          }}
-        >
+        <tag style={{ fontSize: "14px" }} className="float-left">
+          Totaal:
+        </tag>
+        <tag style={{ fontSize: "20px" }} className="float-right">
           €{(Math.round(total * 100) / 100).toFixed(2)}
         </tag>
       </div>
       <br />
-      <Accordion defaultActiveKey="0">
-        <div className="cart">
-          <div className="card-header">
-            <a onClick={() => getAdresses()} id="bestel_nu">
-              <CustomToggle eventKey="1">Bestel nu</CustomToggle>
-            </a>
-          </div>
-          <Accordion.Collapse eventKey="1">
-            <AdressesComponent
-              paymentType={props.paymentType}
-              setPaymentType={props.setPaymentType}
-              sendOrder={sendOrder}
-              adresses={adresses}
-              token={props.token}
-              user={props.user}
-              changeName={changeName}
-              changeLastName={changeLastName}
-              changePhone={changePhone}
-              changeStreet={changeStreet}
-              changePostcode={changePostcode}
-              changePlace={changePlace}
-              name={name}
-              lastName={lastName}
-              phone={phone}
-              street={street}
-              postcode={postcode}
-              place={place}
-            />
-          </Accordion.Collapse>
+      <div className="text-center" style={{ marginTop: "40px" }}>
+        <div style={{ width: "80%", marginLeft: "10%" }}>
+          <button
+            className="btn"
+            style={{
+              marginTop: "30px",
+              width: "100%",
+              backgroundColor: "white",
+              color: "#477A78",
+              fontWeight: "bold",
+            }}
+          >
+            Bestel nu
+          </button>
+          <br />
+          <br />
+          <br />
+          <br />
         </div>
-      </Accordion>
+      </div>
       {/* 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Body>
-          <iframe src={payUrl} style={{ width: "100%", height: "400px" }} />
-        </Modal.Body>
-      </Modal> */}
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Body>
+            <iframe src={payUrl} style={{ width: "100%", height: "400px" }} />
+          </Modal.Body>
+        </Modal> */}
     </div>
   );
 };

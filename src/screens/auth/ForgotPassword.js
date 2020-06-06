@@ -21,6 +21,7 @@ const ForgotPassword = (props) => {
 
     if (!email) {
       alert("Please enter your email");
+      return;
     }
 
     axios
@@ -45,12 +46,12 @@ const ForgotPassword = (props) => {
       <div className="container">
         <div className="">
           <div className="row" style={{ paddingTop: "140px" }}>
-            <div className="col-md-2 col-lg-3 col-sm-2 col-xs-0"></div>
-            <div className="col-md-8 col-lg-6 col-sm-8 col-xs-12">
+            <div className="col-md-4 col-lg-3 col-sm-2 col-xs-0"></div>
+            <div className="col-md-6 col-lg-6 col-sm-8 col-xs-12">
               <div
                 className="card"
                 style={{
-                  backgroundColor: "#131313",
+                  backgroundColor: "white",
                 }}
               >
                 <div
@@ -62,32 +63,39 @@ const ForgotPassword = (props) => {
                     width: "100%",
                   }}
                 >
+                  <br />
+
                   <h1
                     className="text-center"
                     style={{
-                      color: "#F2A83B",
+                      color: "#404B69",
                       fontWeight: "bold",
-                      fontSize: "36px",
+                      fontSize: "24px",
                     }}
                   >
-                    WACHTWOORD RESETTEN
+                    Wachtwoord vergeten
                   </h1>
+                  <br />
                   <h4
                     style={{
-                      fontSize: "24px",
+                      fontSize: "14px",
                       textAlign: "center",
-                      color: "white",
+                      color: "#4A4A4A",
                     }}
                   >
-                    Vul je e-mail adres in
+                    Vul je e-mail adres in en ontvang een link om je wachtwoord
+                    te herstellen.
                   </h4>
+                  <br />
                   <br />
                   <form onSubmit={sendEmailForgot}>
                     <div className="form-group">
+                      <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                        E-mail adres
+                      </h6>
                       <input
                         className="form-control"
                         type="email"
-                        placeholder="e-mail"
                         onChange={changeEmail}
                         style={styles.input}
                       />
@@ -100,8 +108,8 @@ const ForgotPassword = (props) => {
                         maxWidth: "200px",
                         marginTop: "15px",
                         marginBottom: "15px",
-                        backgroundColor: "#F2A83B",
-                        borderColor: "#F2A83B",
+                        backgroundColor: "#477A78",
+                        borderColor: "#477A78",
                       }}
                     >
                       Versturen
@@ -114,7 +122,7 @@ const ForgotPassword = (props) => {
                 </div>
               </div>
             </div>
-            <div className="col-md-2 col-lg-3 col-sm-2 col-xs-0"></div>
+            <div className="col-md-3 col-lg-3 col-sm-2 col-xs-0"></div>
           </div>
         </div>
       </div>
@@ -125,7 +133,10 @@ const ForgotPassword = (props) => {
 const styles = {
   input: {
     width: "100%",
-    backgroundColor: "#C4C4C4",
+    backgroundColor: "#FAFAFA",
+    border: "none",
+    borderRadius: "5px",
+    height: "45px",
   },
 };
 
