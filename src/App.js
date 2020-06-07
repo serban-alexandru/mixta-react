@@ -241,7 +241,7 @@ function App() {
                 <PostCode token={token} />
               </Route> */}
               <Route path="/settings">
-                <Settings token={token} />
+                <Settings logout={logout} token={token} />
               </Route>
               {/* <Route path="/order_details">
                 <OrderDetails
