@@ -241,7 +241,12 @@ function App() {
                 <PostCode token={token} />
               </Route> */}
               <Route path="/settings">
-                <Settings logout={logout} token={token} />
+                <Settings
+                  token={token}
+                  setUser={setUser}
+                  user={user}
+                  logout={logout}
+                />
               </Route>
               {/* <Route path="/order_details">
                 <OrderDetails
