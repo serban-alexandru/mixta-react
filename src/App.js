@@ -213,7 +213,7 @@ function App() {
             </Navbar>
           </div>
           <div
-            className="col-md-9"
+            className="col-md-7 col-lg-9"
             style={{
               padding: "0px",
               backgroundColor: "#FAFBFC",

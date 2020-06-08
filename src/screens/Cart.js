@@ -12,6 +12,7 @@ import { Modal } from "react-bootstrap";
 import {
   faTrashAlt,
   faTrashRestoreAlt,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Cart = (props) => {
@@ -80,6 +81,18 @@ const Cart = (props) => {
   if (props.cart.length == 0) {
     return <CartEmpty />;
   }
+
+  let ok = 0;
+  for (let i = 0; i <= props.cart.length; i++) {
+    if (props.cart[i] && props.cart[i].quantity > 0) {
+      ok = 1;
+    }
+  }
+
+  if (ok == 0) {
+    return <CartEmpty />;
+  }
+
   console.log(props.cart);
 
   const addQuantity = (id) => {
@@ -241,7 +254,7 @@ const Cart = (props) => {
 
   return (
     <div
-      className="col-md-3 col-sm-0 col-xs-0  d-none d-sm-none  d-md-block"
+      className="col-md-5 col-lg-3 col-sm-0 col-xs-0  d-none d-sm-none  d-md-block"
       style={{
         // Height: "80vh",
         minHeight: "100%",
@@ -271,6 +284,21 @@ const Cart = (props) => {
           return (
             <div>
               <div className="card" style={{ padding: "0px" }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "15px",
+                    fontSize: "15px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    removeItem(index);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </span>
+
                 <div style={{ width: "100%" }}>
                   <span
                     style={{
@@ -314,12 +342,11 @@ const Cart = (props) => {
                   </span>
                   <span style={{ display: "inline-block" }}>
                     <img
-                      src="./burger.png"
+                      src={product.imageUrl}
                       style={{
                         height: "115px",
-                        width: "115px",
                         marginTop: "-50px",
-                        marginLeft: "-130px",
+                        marginLeft: "-100px",
                       }}
                     />
                     <br />
@@ -328,7 +355,7 @@ const Cart = (props) => {
                     <tag style={{ marginTop: "20px", marginLeft: "-220px" }}>
                       <br />
                       {product.name}
-                      {product.id}
+                      {/* {product.id} */}
                       <br />
                       <span style={{ color: "#477A78", textAlign: "left" }}>
                         €{product.price}
@@ -364,24 +391,28 @@ const Cart = (props) => {
       })}
       <br />
       {props.cart.map((product, index) => {
-        return (
-          <div>
-            <h2
-              className="text-left"
-              style={{
-                fontSize: "14px",
-                color: "white",
-                padding: "2px 20px 2px 20px",
-              }}
-            >
-              {product.name} x {product.quantity}
-              <b className="float-right">
-                €{Math.round(product.price * product.quantity * 100) / 100}
-              </b>
-            </h2>
-          </div>
-        );
+        if (product.quantity > 0) {
+          return (
+            <div>
+              <h2
+                className="text-left"
+                style={{
+                  fontSize: "14px",
+                  color: "white",
+                  padding: "2px 20px 2px 20px",
+                }}
+              >
+                {product.name} x {product.quantity}
+                <b className="float-right">
+                  €{Math.round(product.price * product.quantity * 100) / 100}
+                </b>
+              </h2>
+            </div>
+          );
+        }
+        return "";
       })}
+
       <br />
       <hr
         style={{

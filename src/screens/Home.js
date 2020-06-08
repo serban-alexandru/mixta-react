@@ -61,7 +61,7 @@ const Home = (props) => {
         src="./burger-bg.png"
         style={{ width: "100%", position: "absolute" }}
       />
-      <div className="container">
+      <div className="container mb-4">
         <div className="">
           <div className="row" style={{ paddingTop: "260px" }}>
             <div
@@ -114,10 +114,10 @@ const Home = (props) => {
                   return (
                     <div className="card" style={styles.prductCard}>
                       <img
-                        src="./burger.png"
+                        src={product.imageUrl}
                         style={{
-                          height: "115px",
-                          width: "115px",
+                          maxHeight: "115px",
+                          maxWidth: "115px",
                           margin: "-5px",
                         }}
                       />

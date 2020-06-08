@@ -1,6 +1,6 @@
 const data = {
-  baseUrl: "http://burgery.online",
-  // baseUrl: "http://localhost/burgery/public",
+  // baseUrl: "http://mixta.burgery.online",
+  baseUrl: "http://localhost/mixta/public",
 };
 
 export default data;
