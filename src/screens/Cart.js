@@ -157,7 +157,7 @@ const Cart = (props) => {
     }
   };
 
-  if (!checkData()) {
+  if (!checkData() && props.user.id) {
     window.location.reload();
   }
 
