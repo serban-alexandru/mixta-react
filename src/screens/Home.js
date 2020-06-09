@@ -32,6 +32,11 @@ const Home = (props) => {
     );
   };
 
+  if (!pickedCat) {
+    pickCategory(1);
+    setPickedCat(1);
+  }
+
   const addToCart = (product) => {
     // console.log(product);
     let products = props.cart;

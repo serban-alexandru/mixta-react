@@ -28,11 +28,25 @@ const Cart = (props) => {
   // const [street, setStreet] = useState("street");
   // const [postcode, setPostcode] = useState("postcode");
   // const [place, setPlace] = useState("place");
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   const [paying, setPaying] = useState(0);
   const [payingId, setPayingId] = useState(0);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const handleClose = (index) => {
+    let newShow = show;
+    newShow[index] = false;
+
+    setShow([...newShow]);
+  };
+
+  const handleShow = (index) => {
+    let newShow = show;
+    newShow[index] = true;
+
+    setShow([...newShow]);
+  };
+
+  const [show, setShow] = useState([]);
 
   if (payingId != 0 && paying == 1) {
     const checkk = () => {
@@ -44,6 +58,7 @@ const Cart = (props) => {
             setPayingId(0);
             clearInterval(checkorder);
             alert("Thank you for your order");
+            window.location.reload();
           }
         })
         .catch((err) => {});
@@ -142,14 +157,18 @@ const Cart = (props) => {
     }
   };
 
+  if (!checkData()) {
+    window.location.reload();
+  }
+
   function sendOrder() {
     if (props.cart.length == 0) {
       alert("Please add products in your cart!");
     }
-    if (!props.paymentType) {
-      alert("Please select a payment method");
-      return;
-    }
+    // if (!props.paymentType) {
+    //   alert("Please select a payment method");
+    //   return;
+    // }
 
     if (!checkData()) {
       alert("Please complete your adress details");
@@ -186,10 +205,10 @@ const Cart = (props) => {
         // user token
         token: props.token,
         // order details
-        paymentType,
-        deliveryType,
-        time,
-        deliveryTime,
+        paymentType: "online",
+        deliveryType: "2",
+        time: "0",
+        deliveryTime: "0",
         // user details
         name,
         lastName,
@@ -198,6 +217,13 @@ const Cart = (props) => {
         postcode,
         place,
         products: props.cart,
+        extra: 5,
+        options: [
+          {
+            id: 1,
+            quantity: 1,
+          },
+        ],
       })
       .then((res) => {
         console.log(res);
@@ -455,6 +481,9 @@ const Cart = (props) => {
               color: "#477A78",
               fontWeight: "bold",
             }}
+            onClick={() => {
+              handleShow(0);
+            }}
           >
             Bestel nu
           </button>
@@ -470,8 +499,185 @@ const Cart = (props) => {
             <iframe src={payUrl} style={{ width: "100%", height: "400px" }} />
           </Modal.Body>
         </Modal> */}
+
+      {/* MODAL START */}
+      <Modal
+        show={show[0]}
+        onHide={() => {
+          handleClose(0);
+        }}
+        style={{ marginTop: "10%", width: "100%" }}
+      >
+        <Modal.Header
+          style={{
+            width: "100%",
+            border: "none",
+            paddingTop: "20px",
+            paddingRight: "20px",
+          }}
+          closeButton
+        >
+          <Modal.Title
+            style={{ fontSize: "24px", fontWeight: "bold", width: "100%" }}
+          >
+            <p className="text-center">Profiel wijzigen</p>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="container">
+            <div className="">
+              <div className="row">
+                <div
+                  className="col-md-12 col-lg-12 col-sm-12 col-xs-12"
+                  style={{ marginBottom: "" }}
+                >
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                            Naam
+                          </h6>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder=""
+                            onChange={changeName}
+                            style={styles.input}
+                            value={name}
+                          />
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                            Voornaam
+                          </h6>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Voornaam"
+                            onChange={changeLastName}
+                            style={styles.input}
+                            value={lastName}
+                          />
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                            GSM-nummer
+                          </h6>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="GSM-nummer"
+                            onChange={changePhone}
+                            style={styles.input}
+                            value={phone}
+                          />
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                            Straat en huisnummer
+                          </h6>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Straat en huisnummer"
+                            onChange={changeStreet}
+                            style={styles.input}
+                            value={street}
+                          />
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                            Postcode
+                          </h6>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Postcode"
+                            onChange={changePostcode}
+                            style={styles.input}
+                            value={postcode}
+                          />
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <h6 style={{ fontSize: "12px", textAlign: "left" }}>
+                            Plaats
+                          </h6>
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Plaats"
+                            onChange={changePlace}
+                            style={styles.input}
+                            value={place}
+                          />
+                        </div>
+                        <br />
+                      </div>
+
+                      <div className="col-md-12 text-center">
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          style={{
+                            width: "100%",
+                            maxWidth: "200px",
+                            marginTop: "15px",
+                            backgroundColor: "#477A78",
+                            borderColor: "#477A78",
+                          }}
+                          onClick={sendOrder}
+                        >
+                          Opslaan
+                        </button>
+                      </div>
+                    </div>
+                    <br />
+                    <br />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* MODAL END */}
     </div>
   );
+};
+
+const styles = {
+  input: {
+    width: "100%",
+    backgroundColor: "#FAFAFA",
+    border: "none",
+    borderRadius: "5px",
+    height: "45px",
+  },
 };
 
 export default Cart;
